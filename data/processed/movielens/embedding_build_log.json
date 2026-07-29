@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-05-23T21:34:55",
+  "embedding_fallback_to_mock": false,
+  "embedding_runtime": {
+    "device": "cuda:0",
+    "torch_cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4090",
+    "batch_size": 32,
+    "embedding_mode": "bge",
+    "model_name": "/root/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181",
+    "sentence_transformer_device_requested": "cuda",
+    "sentence_transformer_model_device_actual": "cuda:0"
+  },
+  "embedding_mode_requested": "bge",
+  "build_status": "ok",
+  "primary_embedding_error_on_failure": null
+}

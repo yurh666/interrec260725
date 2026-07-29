@@ -1,0 +1,12 @@
+# interrec-yrh validation: 2 test sessions, canonical distill surface config.
+inherits: book_full_integrated_distill_surface_seed42.yaml
+
+simulation:
+  split: test
+  max_turns: 15
+  max_users: 2
+  episode_ids: []
+
+_meta:
+  interrec_yrh: smoke_n2
+  purpose: package verification only

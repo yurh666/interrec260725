@@ -1,0 +1,182 @@
+# Canonical main-table run (book) + ONLY surface_writer distill LoRA.
+# Semantic/hypothesis path unchanged vs final_results_seed42 (Hit@10 main table).
+# Do not use final_unified book_seed42.yaml for this run.
+
+seed: 42
+dataset:
+  name: book
+  processed_dir: data/processed/amazon_book
+embedding:
+  mode: bge
+  dim: 128
+  normalize: true
+  precomputed_path: data/processed/amazon_book/item_embeddings_pca128.npy
+  use_mock_if_failed: false
+  device: cpu
+  output_dir: data/processed/amazon_book
+belief:
+  sigma0: 1.0
+  jitter: 1e-6
+  init_mode: weighted_average
+recommendation:
+  top_k: 10
+  lambda_explore: 0.1
+  uncertainty_top_k: 5
+simulation:
+  split: test
+  max_turns: 15
+  max_users: null
+  theta_star_split:
+    train: future_train
+    valid: future_valid
+    test: future_test
+  theta_star_mode: future_average
+  user_choice_mode: deterministic_argmax
+  tau_user_choice: 0.2
+  trace:
+    enabled: false
+    mode: disabled
+  episode_ids: []
+llm:
+  mode: mock
+  provider: none
+  base_url: ''
+  cache:
+    enabled: false
+    memory_max_entries: 0
+    dir: .cache/interrec_llm_frontier_aware_book_full_seed42_disabled
+ask:
+  hypothesis_generation:
+    mode: frontier_clustered_v32
+    frontier_clustered_v32:
+      enabled: true
+      simulator_integration_enabled: true
+      integrated: true
+      use_mock_llm: true
+      cluster_bound_generation_v2_enabled: true
+      cluster_bound_domain: amazon_book
+      enable_cluster_bound_v2_entropy_ask_gate: false
+      max_entropy_gate_asks_per_session: 3
+      candidate_scope: 1500
+      frontier_top_k: 1500
+      frontier_uncertain_k: 50
+      boundary_rank_start: 10
+      boundary_rank_end: 1500
+      cluster_count: 5
+      min_cluster_size: 5
+      max_representatives_per_cluster: 2
+      max_contrast_pairs: 3
+      choice_options_per_question: 3
+      semantic_backend:
+        enabled: true
+        type: integrated_representative_item
+        variant: frontier_aware
+        top_k: 5
+        alpha: 0.7
+        beta: 0.3
+        gamma: 0.05
+      max_entropy_gate_asks_per_run: 2107
+      question_granularity: original
+      adaptive_granularity: false
+      coarse_granularity: false
+      pre_gate: false
+      pre_gate_enabled: false
+      gate_forward: false
+      voi_heavy_mc: false
+      when_to_ask: full_voi
+      self_check_soft_accept_repairable: true
+      use_frontier_choice_question_for_ask: true
+  representative_retrieval:
+    mode: legacy
+    gamma_negative_bm25: 0.5
+    prefetch_k: 400
+    overlap_penalty_coef: 0.35
+    use_positive_negative_queries: true
+    use_overlap_penalty: true
+    use_multi_centroid: false
+    log_scores: false
+  K_directions: 5
+  M_hypotheses: 5
+  n_options: 3
+  include_none: true
+  representative_top_k: 5
+  tau_choice: 0.2
+  tau_none: 0.2
+  none_threshold: 0.25
+  none_bias: 0.0
+  mc_samples: 128
+  c_ask: 0.35
+  alpha_none: 1.2
+  neutrality:
+    mode: mock
+  voi_gate:
+    enabled: false
+logging:
+  save_full_log: true
+  save_artifacts: true
+  generate_report: true
+  report_format: markdown
+  timestamp_run_id: false
+  log_representative_items_scores: true
+  frontier_clustered_v32_debug: true
+api_backend:
+  enabled: false
+trace_replay:
+  enabled: false
+network_guard:
+  enabled: true
+  expected_api_calls: 0
+semantic_backend:
+  enabled: true
+  type: integrated_representative_item
+  variant: frontier_aware
+  top_k: 5
+  alpha: 0.7
+  beta: 0.3
+  gamma: 0.05
+  implementation_mode: frontier_clustered_v32_cluster_bound_v2_mock
+  allow_cluster_bound_v2_mock_fallback: true
+  preserve_reference_route: true
+dataset_profile: ../datasets/book_bge_pca128.yaml
+memory:
+  enabled: true
+  logging_enabled: true
+  mode: compatibility
+  effect_strength: 0.0
+  retrieve_enabled: true
+  writeback_enabled: true
+  belief_update_mode: original_laplace
+  memory_projection_enabled: false
+  memory_projection_alpha: 0.0
+  memory_belief_blend: 0.0
+  active_memory_refinement: false
+  projection:
+    enabled: false
+    alpha: 0.0
+surface_writer:
+  mode: local_small_model
+  local_model_path: outputs/intent_teacher_v2/lora_adapter
+  inference_config_path: outputs/intent_teacher_v2/inference_config.json
+  fallback_mode: mock_template
+  allow_fallback_if_model_load_failed: true
+  api_enabled: false
+runtime:
+  trace_replay_enabled: false
+  cache_enabled: false
+  network_guard_enabled: true
+  api_calls_expected: 0
+_embedding_build_manifest:
+  timestamp: '2026-05-23T21:35:11'
+  embedding_fallback_to_mock: false
+  embedding_runtime:
+    device: cuda:0
+    torch_cuda_available: true
+    gpu_name: NVIDIA GeForce RTX 4090
+    batch_size: 32
+    embedding_mode: bge
+    model_name: /root/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181
+    sentence_transformer_device_requested: cuda
+    sentence_transformer_model_device_actual: cuda:0
+  embedding_mode_requested: bge
+  build_status: ok
+  primary_embedding_error_on_failure: null

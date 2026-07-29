@@ -1,0 +1,9 @@
+# A/B smoke: legacy surface LoRA (2 sessions)
+inherits: smoke_book_distill_n2_seed42.yaml
+
+surface_writer:
+  local_model_path: outputs/surface_writer_qwen/lora_adapter
+  inference_config_path: outputs/surface_writer_qwen/inference_config.json
+
+_meta:
+  ab_surface: legacy

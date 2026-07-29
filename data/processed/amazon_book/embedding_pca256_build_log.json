@@ -1,0 +1,24 @@
+{
+  "created": "2026-06-04T19:54:35",
+  "source_embedding": "/root/interrec/data/processed/amazon_book/item_embeddings.npy",
+  "source_sha256": "cbee28b7adb7ceef57c96591ec659848782751247dec755608d6accf46202f00",
+  "pca_components": 256,
+  "explained_variance_ratio_sum": 0.8436983823776245,
+  "output_path": "/root/interrec/book_embedding_pca_export/amazon_book/item_embeddings_pca256.npy",
+  "shape": [
+    7992,
+    256
+  ],
+  "dtype": "float32",
+  "sha256": "77b0c52431f6309524ffbf881f1e5dd34692dbe9f943bfaca9efdc0750c4b062",
+  "l2_normalized": true,
+  "cosine_random_1000": {
+    "mean": -0.0033745046239346266,
+    "std": 0.08749229460954666,
+    "min": -0.22340592741966248,
+    "max": 0.5212618708610535
+  },
+  "build_time_sec": 0.42,
+  "item_count": 7992,
+  "items_sha256": "22bb7f185c3c4993ed7e95a8e2790de812e25ebd9b72164224266463d008c137"
+}

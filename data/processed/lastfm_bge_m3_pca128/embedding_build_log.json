@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-07-04T16:40:02.676174+00:00",
+  "embedding_mode_requested": "bge_m3_pca128",
+  "embedding_runtime": {
+    "embedding_mode": "bge_m3_pca",
+    "pca_components": 128
+  },
+  "build_status": "ok",
+  "source_embedding": "/home/yrh666/interrec-noapi/data/processed/lastfm_bge_m3/item_embeddings.npy"
+}

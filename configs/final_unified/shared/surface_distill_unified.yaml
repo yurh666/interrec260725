@@ -1,0 +1,17 @@
+# Unified surface writer: distilled LoRA (user-visible text only).
+# Does not change hypothesis vectors, VOI, belief update, or argmax user simulator.
+
+surface_writer:
+  mode: local_small_model
+  local_model_path: outputs/intent_teacher_v2/lora_adapter
+  inference_config_path: outputs/intent_teacher_v2/inference_config.json
+  fallback_mode: mock_template
+  allow_fallback_if_model_load_failed: true
+  api_enabled: false
+  require_cache_hit: false
+  allow_mock: true
+  allow_model_generation_on_miss: true
+  cache_enabled: false
+
+runtime:
+  cache_enabled: false

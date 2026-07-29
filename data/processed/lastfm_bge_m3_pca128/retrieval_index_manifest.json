@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-07-25T20:35:00+08:00",
+  "dense_retrieval_backend": "numpy_inner_product",
+  "note": "Runtime uses L2-normalized query · item matrix multiply on CPU; no FAISS required.",
+  "runtime_lexical_vs_dense_audit": "BM25 is a lightweight lexical retrieval helper built at runtime from item text metadata.\n\nDense semantic embeddings are fully precomputed offline and loaded from disk.",
+  "embedding_file": "item_embeddings.npy",
+  "item_id_map": "item_id_to_index.json",
+  "shape": [
+    2665,
+    128
+  ],
+  "faiss_index_file": null,
+  "provenance": "Aligned with final LastFM BGE-M3 PCA128 item_embeddings.npy (2665 x 128); same schema as movielens/book retrieval_index_manifest."
+}

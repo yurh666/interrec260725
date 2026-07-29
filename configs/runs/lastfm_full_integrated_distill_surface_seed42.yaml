@@ -1,0 +1,19 @@
+# InterRec 260725 LastFM full: same hypothesis chain as 260724 mock full + distill surface.
+inherits: lastfm_full_integrated_mock_surface_seed42.yaml
+
+surface_writer:
+  mode: local_small_model
+  local_model_path: outputs/intent_teacher_v2/lora_adapter
+  inference_config_path: outputs/intent_teacher_v2/inference_config.json
+  fallback_mode: mock_template
+  allow_fallback_if_model_load_failed: true
+  api_enabled: false
+  cache_enabled: false
+  require_cache_hit: false
+  allow_mock: true
+  allow_model_generation_on_miss: true
+
+_meta:
+  interrec_release: interrec260725
+  prev_release: interrec260724
+  diff_from_260724: surface_writer distill LoRA only

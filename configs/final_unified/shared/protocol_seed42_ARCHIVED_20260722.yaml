@@ -1,0 +1,87 @@
+# ARCHIVED — NOT IN EXECUTION PATH (interrec260725)
+# See configs/final_unified/shared/README_CN.md
+# Unified runs inherit *_full_integrated_distill_surface_seed42.yaml only.
+
+# Shared InterRec Final protocol (seed42) — documentation + common runtime keys.
+# Per-dataset runs inherit this file then apply profiles/<dataset>_seed42.yaml,
+# then delegate to legacy final configs for full frontier inheritance (equivalence).
+
+seed: 42
+
+simulation:
+  split: test
+  max_users: null
+  max_turns: 15
+  episode_ids: []
+  user_choice_mode: deterministic_argmax
+  tau_user_choice: 0.2
+
+ask:
+  c_ask: 0.35
+  mc_samples: 128
+  n_options: 3
+  include_none: true
+  voi_gate:
+    enabled: true
+    mode: dominant_pairwise_hrv
+    alpha: 0.35
+    mass: 0.8
+    fallback_to_full_voi_on_error: true
+    preserve_ask_decision: true
+  hypothesis_generation:
+    mode: frontier_clustered_v32
+    frontier_clustered_v32:
+      cluster_bound_generation_v2_enabled: true
+      use_mock_llm: false
+      use_frontier_choice_question_for_ask: true
+
+semantic_backend:
+  enabled: true
+  type: integrated_representative_item
+  variant: frontier_aware
+  implementation_mode: frontier_clustered_v32_integrated_representative_item
+  allow_cluster_bound_v2_mock_fallback: false
+  top_k: 5
+  alpha: 0.7
+  beta: 0.3
+  gamma: 0.05
+
+memory:
+  enabled: true
+  logging_enabled: true
+  mode: compatibility
+  effect_strength: 0.0
+  retrieve_enabled: true
+  writeback_enabled: true
+  belief_update_mode: original_laplace
+  memory_projection_enabled: false
+  memory_projection_alpha: 0.0
+  memory_belief_blend: 0.0
+  active_memory_refinement: false
+  projection:
+    enabled: false
+    alpha: 0.0
+
+llm:
+  mode: mock
+  provider: none
+  base_url: ''
+  cache:
+    enabled: false
+    memory_max_entries: 0
+
+api_backend:
+  enabled: false
+trace_replay:
+  enabled: false
+network_guard:
+  enabled: true
+  expected_api_calls: 0
+runtime:
+  trace_replay_enabled: false
+  network_guard_enabled: true
+  api_calls_expected: 0
+
+logging:
+  save_full_log: true
+  generate_report: true

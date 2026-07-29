@@ -1,0 +1,355 @@
+# Canonical main-table run (lastfm) + ONLY surface_writer distill LoRA.
+# Semantic/hypothesis path unchanged vs final_results_seed42 (Hit@10 main table).
+# Do not use final_unified book_seed42.yaml for this run.
+
+seed: 42
+dataset:
+  name: lastfm
+  raw_interactions_path: data/raw/interactions.csv
+  raw_items_path: data/raw/items.csv
+  processed_dir: data/processed/lastfm_bge_m3_pca128
+  min_user_interactions: 20
+  min_item_interactions: 5
+  observed_ratio: 0.4
+  future_train_ratio: 0.7
+  future_valid_ratio: 0.1
+  future_test_ratio: 0.2
+  min_observed_interactions: 10
+  min_future_interactions: 5
+embedding:
+  mode: bge_m3_pca
+  dim: 128
+  normalize: true
+  device: auto
+  st_batch_size: 32
+  bge_model: BAAI/bge-m3
+  sentence_transformer_model: sentence-transformers/all-MiniLM-L6-v2
+  use_mock_if_failed: false
+  save_faiss_cpu_index: false
+  output_dir: data/processed/lastfm_bge_m3_pca128
+  manifest_path: data/processed/lastfm_bge_m3_pca128/manifest.json
+belief:
+  sigma0: 1.0
+  jitter: 1e-6
+  init_mode: weighted_average
+recommendation:
+  top_k: 10
+  lambda_explore: 0.1
+  uncertainty_top_k: 5
+ask:
+  hypothesis_generation:
+    mode: frontier_clustered_v32
+    require_negative_contrast: true
+    require_distinguishing_features: true
+    enforce_feature_signature_diversity: true
+    feature_signature_max_jaccard: 0.85
+    frontier_clustered_v32:
+      enabled: true
+      simulator_integration_enabled: true
+      frontier_top_k: 100
+      frontier_uncertain_k: 50
+      boundary_rank_start: 10
+      boundary_rank_end: 100
+      cluster_count: 5
+      min_cluster_size: 5
+      max_representatives_per_cluster: 2
+      max_contrast_pairs: 3
+      choice_options_per_question: 3
+      use_mock_llm: true
+      log_case_outputs: true
+      case_output_limit: 999
+      integrated: true
+      strict_jsonl_full_log: true
+      jsonl_raw_preview_chars: 800
+      jsonl_self_check_after_write: true
+      lazy_generation_enabled: true
+      pre_gate_enabled: true
+      pre_gate_max_top10_margin: null
+      pre_gate_min_uncertainty: null
+      max_v32_generations_per_session: 5
+      max_v32_asks_per_session: 5
+      max_total_asks_per_session_for_lazy_sanity: 5
+      ask_cooldown_turns: 1
+      disable_generation_after_consecutive_no_rank_change: 3
+      rank_safe_guard_enabled: false
+      rank_safe_guard_mode: skip_ask
+      rank_safe_guard_margin_threshold: null
+      rank_safe_guard_prev_margin_threshold: null
+      rank_safe_guard_stability_threshold: null
+      rank_safe_guard_consecutive_ask_limit: 2
+      rank_safe_guard_log_only: true
+      prompt_compact_mode: true
+      max_hypotheses: 3
+      max_option_words: 35
+      semantic_summary_max_chars: 96
+      history_summary_max_chars: 160
+      rank_safe_mcq_roles_enabled: true
+      rank_safe_guard_version: v41
+      rank_safe_guard_action_mode: ternary
+      rank_safe_guard_allow_conservative_question: true
+      rank_safe_guard_v41_role_aware_enabled: true
+      rank_safe_guard_ask_effect_memory_enabled: true
+      rank_safe_guard_conservative_buffer_mode: true
+      rank_safe_guard_unavailable_conservative_fallback: allow_normal
+      rank_safe_guard_tradeoff_policy: A
+      rank_safe_guard_risk_scale: 0.75
+      rank_safe_guard_skip_threshold: 0.88
+      rank_safe_guard_conservative_threshold: 0.4
+      rank_safe_guard_preservation_min: 0.4
+      rank_safe_guard_coverage_min: 0.3
+      rank_safe_guard_displacement_max: 0.5
+      rank_safe_guard_v41_preservation_allow_min: 0.5
+      rank_safe_guard_v41_displacement_allow_max: 0.35
+      rank_safe_guard_v41_displacement_conservative_min: 0.28
+      rank_safe_guard_v41_displacement_high_min: 0.45
+      rank_safe_guard_v41_selected_sim_low: 0.42
+      rank_safe_guard_v41_selected_sim_allow_min: 0.5
+      rank_safe_guard_scope: v32_only
+      rank_safe_guard_policy: v42_option_set_guard
+      rank_safe_guard_enable_skip: false
+      relaxed_allow_boundary_default: true
+      relaxed_allow_explore_default: true
+      relaxed_preserve_requires_high_risk: true
+      relaxed_preserve_disp_min: 0.55
+      relaxed_preserve_risk_margin: 0.12
+      relaxed_explore_guard_enabled: true
+      relaxed_explore_disp_min: 0.45
+      relaxed_explore_top_sim_max: 0.35
+      relaxed_explore_preserve_evidence_max: 0.3
+      relaxed_explore_preserve_risk_min: 0.45
+      relaxed_explore_memory_high_disp_min: 2
+      relaxed_explore_memory_risk_min: 0.6
+      relaxed_explore_consecutive_ask_min: 1
+      rank_safe_guard_block_execution: false
+      rank_safe_guard_conservative_rewrite_execution: false
+      v42_option_set_memory_risk_min: 0.6
+      v42_option_set_explore_risk_min: 0.6
+      v42_option_set_displacement_min: 0.55
+      v42_option_set_anchor_min: 0.45
+      v42_option_set_weak_preserve_max: 0.45
+      v42_option_set_role_entropy_low: 0.35
+      full_rank_telemetry_enabled: true
+      enable_near_miss_rescue_ask_strict: false
+      enable_cooldown_high_risk_reroute_strict: false
+      near_miss_rescue_max_per_session: 0
+      cooldown_reroute_max_per_session: 0
+      max_total_repair_actions_per_session: 0
+      enable_oos_contrastive_v2_skip: true
+      enable_oos_skip_v32_compensation: false
+      enable_csc_competing_gain_cap: false
+      cluster_bound_generation_v2_enabled: true
+      cluster_bound_domain: lastfm_music
+      enable_cluster_bound_v2_entropy_ask_gate: true
+      max_entropy_gate_asks_per_session: 1
+      max_entropy_gate_asks_per_run: 100
+      entropy_ask_gate_min_belief_entropy: 181.0
+      entropy_ask_gate_threshold_mode: fixed
+      cluster_bound_v2_force_delivery_smoke: false
+      semantic_backend:
+        enabled: true
+        type: integrated_representative_item
+        variant: frontier_aware
+        top_k: 5
+        alpha: 0.7
+        beta: 0.3
+        gamma: 0.05
+  representative_retrieval:
+    mode: legacy
+    gamma_negative_bm25: 0.5
+    prefetch_k: 400
+    overlap_penalty_coef: 0.35
+    use_positive_negative_queries: true
+    use_overlap_penalty: true
+    use_multi_centroid: false
+    log_scores: false
+  K_directions: 5
+  M_hypotheses: 5
+  n_options: 3
+  include_none: true
+  anchor_top_k: 5
+  representative_top_k: 5
+  tau_choice: 0.2
+  tau_none: 0.2
+  none_threshold: 0.25
+  none_bias: 0.0
+  mc_samples: 128
+  c_ask: 0.35
+  alpha_none: 1.2
+  strict_cascade_when_to_ask:
+    enabled: true
+    gate_forward: true
+    candidate_scope_adaptive: false
+    question_granularity_adaptive: false
+    log_gate_decision: true
+    ask_cooldown_turns: 1
+    disable_generation_after_consecutive_no_rank_change: 3
+  voi_gate:
+    enabled: false
+    mode: dominant_pairwise_hrv
+    mass: 0.8
+    alpha: 0.35
+    fallback_to_full_voi_on_error: true
+    log_details: true
+    audit_skipped_voi: false
+    online_quantile_q: 0.75
+    online_quantile_min_history: 2
+  neutrality:
+    mode: llm
+    max_retries: 3
+simulation:
+  split: test
+  max_turns: 15
+  max_users: null
+  theta_star_split:
+    train: future_train
+    valid: future_valid
+    test: future_test
+  theta_star_mode: future_average
+  user_choice_mode: deterministic_argmax
+  tau_user_choice: 0.2
+  tau_user_click: 0.2
+  episode_ids: []
+  trace:
+    enabled: false
+    mode: disabled
+    root: experiments/ranking_aware_voi_gap/frontier_clustered_v32_oos_skip_analysis/lastfm_memory_compatible_full_seed42_batched/trace_fill
+    fail_fast_on_miss: false
+llm:
+  mode: mock
+  provider: none
+  base_url: ''
+  model: deepseek-chat
+  log_prompts: true
+  log_responses: true
+  max_retry: 3
+  max_parse_retries: 3
+  cache:
+    enabled: false
+    dir: .cache/interrec_llm_lastfm_memory_compatible_full_s42
+    max_parse_retries: 3
+    memory_max_entries: 0
+  timeout: 120
+logging:
+  frontier_discriminative_shadow: false
+  save_full_log: true
+  save_artifacts: true
+  generate_report: true
+  report_format: markdown
+  timestamp_run_id: true
+  log_contrastive_hypothesis: false
+  log_representative_items_scores: true
+  log_option_overlap_score: false
+  frontier_clustered_v32_debug: true
+engineering_guards:
+  enabled: false
+  max_llm_http_calls_per_session: null
+  max_neutrality_rounds_per_session: null
+  max_session_wall_time_soft_limit_sec: null
+  disable_neutrality_rewrite_when_over_budget: true
+baselines:
+  retrieval:
+    bm25: true
+    bge_m3: false
+    bge_reranker: false
+  llm_planning:
+    zero_shot: false
+    one_shot: false
+    cot: false
+    plan_solve: false
+    react: false
+    reflexion: false
+  interactive_agents:
+    taira_style: false
+    interecagent_style: false
+    macrs_style: false
+  mcmipl:
+    use_official_repo: false
+    repo_url: https://github.com/ZYM6-6/MCMIPL
+ablations:
+  no_bayesian_belief: false
+  no_information_gain: false
+  static_intent_prototype: false
+  fixed_ask_policy: false
+  free_text_feedback: false
+telemetry:
+  full_rank_telemetry_enabled: true
+movielens_candidate_recall:
+  enabled: false
+movielens_speed_optimization:
+  enabled: false
+movielens_readout_rerank:
+  enabled: false
+batched_run:
+  domain: lastfm
+  seed: 42
+  batch_size: 100
+  total_sessions: 1648
+  tmux_session: lastfm_gate_forward_full_seed42_batched
+  output_root: experiments/ranking_aware_voi_gap/frontier_clustered_v32_oos_skip_analysis/lastfm_gate_forward_full_seed42_batched
+  run_id_stub: lastfm_strict_gate_forward_full_batched_s42
+  require_api_authorization: true
+  performance_proven: false
+memory:
+  enabled: true
+  logging_enabled: true
+  mode: compatibility
+  init_mode: incremental_history
+  belief_update_mode: original_laplace
+  memory_update_applied_to_belief: false
+  memory_projection_enabled: false
+  memory_projection_alpha: 0.0
+  memory_belief_blend: 0.0
+  memory_to_belief_alpha: 0.0
+  active_memory_refinement: false
+  compatible_update_ema: 0.0
+  max_units: 5
+  projection:
+    enabled: false
+    alpha: 0.0
+  adaptive_units:
+    enabled: true
+    max_units: 5
+    use_as_view_only: true
+  effect_strength: 0.0
+  retrieve_enabled: true
+  writeback_enabled: true
+use_mock_llm: true
+gen_mode: representative_item
+trace_replay:
+  enabled: false
+api_backend:
+  enabled: false
+network_guard:
+  enabled: true
+  expected_api_calls: 0
+semantic_backend:
+  enabled: true
+  type: integrated_representative_item
+  variant: frontier_aware
+  top_k: 5
+  alpha: 0.7
+  beta: 0.3
+  gamma: 0.05
+  implementation_mode: frontier_clustered_v32_integrated_representative_item
+  allow_cluster_bound_v2_mock_fallback: false
+surface_writer:
+  mode: local_small_model
+  local_model_path: outputs/intent_teacher_v2/lora_adapter
+  inference_config_path: outputs/intent_teacher_v2/inference_config.json
+  fallback_mode: mock_template
+  allow_fallback_if_model_load_failed: true
+  api_enabled: false
+runtime:
+  trace_replay_enabled: false
+  cache_enabled: false
+  network_guard_enabled: true
+  api_calls_expected: 0
+dataset_profile: ../datasets/lastfm_bge_m3_pca128.yaml
+_embedding_build_manifest:
+  timestamp: '2026-07-04T16:40:02.676174+00:00'
+  embedding_mode_requested: bge_m3_pca128
+  embedding_runtime:
+    embedding_mode: bge_m3_pca
+    pca_components: 128
+  build_status: ok
+  source_embedding: data/processed/lastfm_bge_m3_pca128/item_embeddings.npy

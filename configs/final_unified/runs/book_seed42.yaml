@@ -1,0 +1,7 @@
+# interrec-yrh unified CLI → interrec260725 distill full (seed42)
+inherits: ../../runs/book_full_integrated_distill_surface_seed42.yaml
+
+_meta:
+  package: final_unified
+  dataset: book
+  release: interrec260725

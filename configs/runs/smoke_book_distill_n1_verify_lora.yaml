@@ -1,0 +1,11 @@
+# 1 session: verify distill LoRA loads (no mock fallback).
+inherits: book_full_integrated_distill_surface_seed42.yaml
+
+simulation:
+  split: test
+  max_turns: 15
+  max_users: 1
+  episode_ids: []
+
+_meta:
+  interrec_yrh: lora_verify_n1

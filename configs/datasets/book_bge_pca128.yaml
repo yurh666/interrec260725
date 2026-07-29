@@ -1,0 +1,28 @@
+# Book dataset profile using offline BGE→PCA128 item embeddings (7992 x 128).
+# Does not overwrite the canonical 1024-d item_embeddings.npy.
+dataset:
+  name: book
+  data_root: data/processed/amazon_book
+  item_metadata_path: data/processed/amazon_book/items.csv
+  item_embedding_path: data/processed/amazon_book/item_embeddings_pca128.npy
+  candidate_pool_path: null
+  split_path: data/processed/amazon_book/user_splits.json
+
+embedding:
+  mode: bge
+  dim: 128
+  normalize: true
+  precomputed_path: data/processed/amazon_book/item_embeddings_pca128.npy
+  use_mock_if_failed: false
+  device: cpu
+  output_dir: data/processed/amazon_book
+
+protocol:
+  seed: 42
+  max_turns: 3
+  candidate_scope: 1500
+  top_frontier: 1500
+  boundary_end: 1500
+  strict_s1: true
+  oos_skip: false
+  batched: false

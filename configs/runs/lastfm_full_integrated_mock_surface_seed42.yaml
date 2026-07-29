@@ -1,0 +1,19 @@
+# Full run: same hypothesis path as final_results_seed42 lastfm (smoke-verified).
+inherits: lastfm_hit025_surface_distill_only_seed42.yaml
+
+simulation:
+  split: test
+  max_turns: 15
+  max_users: null
+  episode_ids: []
+
+surface_writer:
+  mode: mock_template
+  local_model_path: null
+  inference_config_path: null
+  api_enabled: false
+  cache_enabled: false
+  require_cache_hit: false
+  allow_mock: true
+  fallback_mode: mock_template
+  allow_model_generation_on_miss: false

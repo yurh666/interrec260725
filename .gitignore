@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+*.log
+.DS_Store
+.env
+.env.*
+
+# Base model not shipped (download Qwen2.5-1.5B-Instruct; see outputs/intent_teacher_v2/BASE_MODEL_SETUP.md)
+models/
+
+# Optional local smoke runs (tiny); keep directory via .gitkeep if needed
+experiments/runs/*/
+!experiments/runs/.gitkeep
+
+# IDE
+.idea/
+.vscode/

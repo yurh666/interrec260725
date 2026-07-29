@@ -1,0 +1,301 @@
+{
+  "dataset": "movielens",
+  "source_1024d_sha256": "2c23eb45243f8739181aa37fe8aa7bc545218c43cdb4c84603eb4eccc7a1ea1d",
+  "input_items_csv_sha256": "d45fc6865a789de9452fbf9d3c7dbe0bb9644da27bf0c2770f53914c0a787bcc",
+  "item_id_list_sha256": "c25d621c623699192185e0766099baeded17a5e192a8d009529bf98f2aa71ac9",
+  "build_note": "PCA candidate embeddings for MovieLens. Do NOT overwrite item_embeddings.npy.",
+  "pca256": {
+    "sha256": "e0490195163c89e40e9f6d52e6c40112ea3503b828d6802c76a6051a08355ea3",
+    "shape": [
+      3115,
+      256
+    ],
+    "dtype": "float32",
+    "filesize_bytes": 3189888,
+    "explained_variance": 0.9188081622123718,
+    "global_stats": {
+      "mean": 4.9377653340343386e-05,
+      "std": 0.06249997764825821,
+      "min": -0.6090050935745239,
+      "max": 0.65664142370224
+    },
+    "norm_stats": {
+      "mean": 1.0,
+      "std": 6.183054779285158e-08,
+      "min": 0.9999997615814209,
+      "max": 1.000000238418579
+    },
+    "cosine_random_1000": {
+      "mean": -0.0066045899875462055,
+      "std": 0.14288409054279327,
+      "min": -0.3481726050376892,
+      "max": 0.522658109664917
+    },
+    "row0_sha256": "d58be511078a5cc6e452a55819d5965d33846eff0d654a0d841575760a53a17a",
+    "row100_sha256": "12dd090062cc56075ba9f40f0437491d96dcb98d50a7ce19616297d7e6505a98",
+    "row1000_sha256": "e2f29774a82c9f557dbc3661241ccf55eb1009d83b0ce2a8896f06f3a35c9aa2",
+    "row3114_sha256": "1d1f4922abd66c5e7e579f9ca894581dcaedaebbe966e0f7795ddb33c4451d1d",
+    "nn_overlap_at10_vs_1024d": 0.7545,
+    "nn_overlap_at20_vs_1024d": 0.74,
+    "nn_samples": [
+      {
+        "query_idx": 0,
+        "query_title": "Toy Story (1995)",
+        "query_category": "Animation",
+        "neighbors": [
+          {
+            "idx": 2467,
+            "sim": 0.7729,
+            "title": "Toy Story 2 (1999)",
+            "category": "Animation"
+          },
+          {
+            "idx": 12,
+            "sim": 0.5873,
+            "title": "Balto (1995)",
+            "category": "Animation"
+          },
+          {
+            "idx": 202,
+            "sim": 0.5872,
+            "title": "Goofy Movie, A (1995)",
+            "category": "Animation"
+          },
+          {
+            "idx": 45,
+            "sim": 0.5271,
+            "title": "Pocahontas (1995)",
+            "category": "Animation"
+          },
+          {
+            "idx": 684,
+            "sim": 0.5238,
+            "title": "Land Before Time III: The Time of the Great Giving (1995)",
+            "category": "Animation"
+          }
+        ]
+      },
+      {
+        "query_idx": 100,
+        "query_title": "Before and After (1996)",
+        "query_category": "Drama",
+        "neighbors": [
+          {
+            "idx": 816,
+            "sim": 0.626,
+            "title": "Secrets & Lies (1996)",
+            "category": "Drama"
+          },
+          {
+            "idx": 2164,
+            "sim": 0.6072,
+            "title": "Morning After, The (1986)",
+            "category": "Drama"
+          },
+          {
+            "idx": 1121,
+            "sim": 0.5434,
+            "title": "Hearts and Minds (1996)",
+            "category": "Drama"
+          },
+          {
+            "idx": 1431,
+            "sim": 0.5241,
+            "title": "Beyond Silence (1996)",
+            "category": "Drama"
+          },
+          {
+            "idx": 26,
+            "sim": 0.5079,
+            "title": "Now and Then (1995)",
+            "category": "Drama"
+          }
+        ]
+      },
+      {
+        "query_idx": 500,
+        "query_title": "Little Rascals, The (1994)",
+        "query_category": "Children's",
+        "neighbors": [
+          {
+            "idx": 306,
+            "sim": 0.6897,
+            "title": "Flintstones, The (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 495,
+            "sim": 0.6248,
+            "title": "Little Big League (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 269,
+            "sim": 0.6032,
+            "title": "Santa Clause, The (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 799,
+            "sim": 0.5942,
+            "title": "Angels in the Outfield (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 794,
+            "sim": 0.5463,
+            "title": "Shaggy Dog, The (1959)",
+            "category": "Children's"
+          }
+        ]
+      }
+    ]
+  },
+  "pca128": {
+    "sha256": "06cfc7a4876e7904c78bb03f45429c3f2deeccc014ca5d769d040b86ea36a0ec",
+    "shape": [
+      3115,
+      128
+    ],
+    "dtype": "float32",
+    "filesize_bytes": 1595008,
+    "explained_variance": 0.78078693151474,
+    "global_stats": {
+      "mean": 0.00011788038682425395,
+      "std": 0.08838827162981033,
+      "min": -0.6507816314697266,
+      "max": 0.6908391714096069
+    },
+    "norm_stats": {
+      "mean": 1.0,
+      "std": 5.332271157953983e-08,
+      "min": 0.9999997615814209,
+      "max": 1.0000001192092896
+    },
+    "cosine_random_1000": {
+      "mean": -0.007075310684740543,
+      "std": 0.16980375349521637,
+      "min": -0.4084421396255493,
+      "max": 0.637398362159729
+    },
+    "row0_sha256": "72438dfa48fad9ec7551e782b38cfc5dae6a048e61f8bb910b895fee1a884614",
+    "row100_sha256": "3719c1bd1dbb2930d4e171f20e0d4bee922c70a4b08f621c195f6f49cff56c3d",
+    "row1000_sha256": "093cde59e9032936879cf6bb7e020e7b3b105d39faf4abc326762ec3f907c013",
+    "row3114_sha256": "86446c783e17393c6b39d21fdf0de035b3c48c0e61f4f3b84560f4570e516ccf",
+    "nn_overlap_at10_vs_1024d": 0.699,
+    "nn_overlap_at20_vs_1024d": 0.704,
+    "nn_samples": [
+      {
+        "query_idx": 0,
+        "query_title": "Toy Story (1995)",
+        "query_category": "Animation",
+        "neighbors": [
+          {
+            "idx": 2467,
+            "sim": 0.7676,
+            "title": "Toy Story 2 (1999)",
+            "category": "Animation"
+          },
+          {
+            "idx": 202,
+            "sim": 0.6734,
+            "title": "Goofy Movie, A (1995)",
+            "category": "Animation"
+          },
+          {
+            "idx": 12,
+            "sim": 0.6581,
+            "title": "Balto (1995)",
+            "category": "Animation"
+          },
+          {
+            "idx": 45,
+            "sim": 0.5933,
+            "title": "Pocahontas (1995)",
+            "category": "Animation"
+          },
+          {
+            "idx": 684,
+            "sim": 0.581,
+            "title": "Land Before Time III: The Time of the Great Giving (1995)",
+            "category": "Animation"
+          }
+        ]
+      },
+      {
+        "query_idx": 100,
+        "query_title": "Before and After (1996)",
+        "query_category": "Drama",
+        "neighbors": [
+          {
+            "idx": 816,
+            "sim": 0.7349,
+            "title": "Secrets & Lies (1996)",
+            "category": "Drama"
+          },
+          {
+            "idx": 1121,
+            "sim": 0.6314,
+            "title": "Hearts and Minds (1996)",
+            "category": "Drama"
+          },
+          {
+            "idx": 2164,
+            "sim": 0.622,
+            "title": "Morning After, The (1986)",
+            "category": "Drama"
+          },
+          {
+            "idx": 632,
+            "sim": 0.6025,
+            "title": "Lone Star (1996)",
+            "category": "Drama"
+          },
+          {
+            "idx": 1431,
+            "sim": 0.5819,
+            "title": "Beyond Silence (1996)",
+            "category": "Drama"
+          }
+        ]
+      },
+      {
+        "query_idx": 500,
+        "query_title": "Little Rascals, The (1994)",
+        "query_category": "Children's",
+        "neighbors": [
+          {
+            "idx": 306,
+            "sim": 0.7786,
+            "title": "Flintstones, The (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 495,
+            "sim": 0.6845,
+            "title": "Little Big League (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 269,
+            "sim": 0.6726,
+            "title": "Santa Clause, The (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 799,
+            "sim": 0.652,
+            "title": "Angels in the Outfield (1994)",
+            "category": "Children's"
+          },
+          {
+            "idx": 794,
+            "sim": 0.6124,
+            "title": "Shaggy Dog, The (1959)",
+            "category": "Children's"
+          }
+        ]
+      }
+    ]
+  }
+}

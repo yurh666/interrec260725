@@ -1,0 +1,238 @@
+{
+  "pca256": {
+    "sha256": "77b0c52431f6309524ffbf881f1e5dd34692dbe9f943bfaca9efdc0750c4b062",
+    "shape": [
+      7992,
+      256
+    ],
+    "dtype": "float32",
+    "filesize_bytes": 8183936,
+    "explained_variance": 0.8436983823776245,
+    "cosine_random_1000": {
+      "mean": -0.0033745046239346266,
+      "std": 0.08749229460954666,
+      "min": -0.22340592741966248,
+      "max": 0.5212618708610535
+    },
+    "row0_sha256": "6f51802534b8d25f3e5581435a2198ee47076802668475e17c3d34ed507d8655",
+    "row100_sha256": "235ae55aedc62aee30d9cbb989e3e6923885a9614d85323d7c1837795034a73b",
+    "row1000_sha256": "086d22fb34fb7d042e3d9fc4bf3d46453c96a215dee1d8720e5a827d665ae363",
+    "row7991_sha256": "6d8398081f7cdffeb525d15c629870d77d178e6ae40b360b8c37caf86452e3b5",
+    "nn_overlap_at10_vs_1024d": 0.646,
+    "nn_samples": [
+      {
+        "query_idx": 0,
+        "query_title": "Conversational Capital: How to Create Stuff People Love to T",
+        "neighbors": [
+          {
+            "idx": 6747,
+            "sim": 0.4379,
+            "title": "33 Million People in the Room: How to Create, Influence, and"
+          },
+          {
+            "idx": 3091,
+            "sim": 0.4226,
+            "title": "How to Make Money with Social Media: An Insider's Guide on U"
+          },
+          {
+            "idx": 1896,
+            "sim": 0.3967,
+            "title": "Social BOOM!: How to Master Business Social Media to Brand Y"
+          },
+          {
+            "idx": 5026,
+            "sim": 0.3924,
+            "title": "Get Up to Speed with Online Marketing: How to Use Websites, "
+          },
+          {
+            "idx": 4381,
+            "sim": 0.3837,
+            "title": "How to Argue: Powerfully, Persuasively, Positively"
+          }
+        ]
+      },
+      {
+        "query_idx": 100,
+        "query_title": "A Nervous Splendor: Vienna 1888-1889",
+        "neighbors": [
+          {
+            "idx": 7613,
+            "sim": 0.5506,
+            "title": "BERLIN GAME."
+          },
+          {
+            "idx": 5974,
+            "sim": 0.5311,
+            "title": "Imperial Spain: 1469-1716"
+          },
+          {
+            "idx": 448,
+            "sim": 0.5033,
+            "title": "Stalin: The Court of the Red Tsar"
+          },
+          {
+            "idx": 4855,
+            "sim": 0.4992,
+            "title": "Eona"
+          },
+          {
+            "idx": 6268,
+            "sim": 0.4926,
+            "title": "Hitler's Hangman: The Life of Heydrich"
+          }
+        ]
+      },
+      {
+        "query_idx": 500,
+        "query_title": "The Observations",
+        "neighbors": [
+          {
+            "idx": 737,
+            "sim": 0.3586,
+            "title": "Gillespie and I: A Novel"
+          },
+          {
+            "idx": 5661,
+            "sim": 0.3107,
+            "title": "The Incorrigible Children of Ashton Place: Book II: The Hidd"
+          },
+          {
+            "idx": 3492,
+            "sim": 0.3069,
+            "title": "An Impartial Witness: A Bess Crawford Mystery"
+          },
+          {
+            "idx": 7946,
+            "sim": 0.3029,
+            "title": "A Lady of His Own (Bastion Club)"
+          },
+          {
+            "idx": 5560,
+            "sim": 0.3011,
+            "title": "The Rebel Princess"
+          }
+        ]
+      }
+    ]
+  },
+  "pca128": {
+    "sha256": "9eff862b6c36fc2fdeaf2abdfd0a3e96a4023717806d9e0ea6dcb0a983fa8fac",
+    "shape": [
+      7992,
+      128
+    ],
+    "dtype": "float32",
+    "filesize_bytes": 4092032,
+    "explained_variance": 0.627071738243103,
+    "cosine_random_1000": {
+      "mean": -0.004247391130775213,
+      "std": 0.11456216871738434,
+      "min": -0.29151666164398193,
+      "max": 0.5946139097213745
+    },
+    "row0_sha256": "c535f220a920b2e5053f91671a5da47ef39ba3f30c05ad84940c2636dec0e7ed",
+    "row100_sha256": "ced2c0ba58caa7c97d6dbd2870d951d69c5bd8c613fa5114c9368d9522f5241a",
+    "row1000_sha256": "4e18ababb23b8b9310dc8e97fd35b7a1a13631b6fc6fe2929c74d9cfec13b563",
+    "row7991_sha256": "2310b907b43b4d6472ad9730d61bf58a974407a2098edc9ecbe31ca3aa306020",
+    "nn_overlap_at10_vs_1024d": 0.5315,
+    "nn_samples": [
+      {
+        "query_idx": 0,
+        "query_title": "Conversational Capital: How to Create Stuff People Love to T",
+        "neighbors": [
+          {
+            "idx": 5026,
+            "sim": 0.5189,
+            "title": "Get Up to Speed with Online Marketing: How to Use Websites, "
+          },
+          {
+            "idx": 6747,
+            "sim": 0.4831,
+            "title": "33 Million People in the Room: How to Create, Influence, and"
+          },
+          {
+            "idx": 3091,
+            "sim": 0.4811,
+            "title": "How to Make Money with Social Media: An Insider's Guide on U"
+          },
+          {
+            "idx": 6692,
+            "sim": 0.4514,
+            "title": "Raving Fans!: Revolutionary Approach to Customer Service (Th"
+          },
+          {
+            "idx": 6959,
+            "sim": 0.4506,
+            "title": "Little Green Book of Getting Your Way: How to Speak, Write, "
+          }
+        ]
+      },
+      {
+        "query_idx": 100,
+        "query_title": "A Nervous Splendor: Vienna 1888-1889",
+        "neighbors": [
+          {
+            "idx": 7613,
+            "sim": 0.6563,
+            "title": "BERLIN GAME."
+          },
+          {
+            "idx": 5974,
+            "sim": 0.6441,
+            "title": "Imperial Spain: 1469-1716"
+          },
+          {
+            "idx": 448,
+            "sim": 0.6403,
+            "title": "Stalin: The Court of the Red Tsar"
+          },
+          {
+            "idx": 7972,
+            "sim": 0.6163,
+            "title": "Young Stalin"
+          },
+          {
+            "idx": 7940,
+            "sim": 0.6006,
+            "title": "The Man from St. Petersburg"
+          }
+        ]
+      },
+      {
+        "query_idx": 500,
+        "query_title": "The Observations",
+        "neighbors": [
+          {
+            "idx": 7946,
+            "sim": 0.4216,
+            "title": "A Lady of His Own (Bastion Club)"
+          },
+          {
+            "idx": 737,
+            "sim": 0.4104,
+            "title": "Gillespie and I: A Novel"
+          },
+          {
+            "idx": 3492,
+            "sim": 0.3964,
+            "title": "An Impartial Witness: A Bess Crawford Mystery"
+          },
+          {
+            "idx": 5661,
+            "sim": 0.3909,
+            "title": "The Incorrigible Children of Ashton Place: Book II: The Hidd"
+          },
+          {
+            "idx": 5242,
+            "sim": 0.3709,
+            "title": "The Trouble with Being a Duke (Kingsborough Ball)"
+          }
+        ]
+      }
+    ]
+  },
+  "source_1024d_sha256": "cbee28b7adb7ceef57c96591ec659848782751247dec755608d6accf46202f00",
+  "input_items_csv_sha256": "22bb7f185c3c4993ed7e95a8e2790de812e25ebd9b72164224266463d008c137",
+  "item_id_list_sha256": "70bf1bb3a9d1fccd02b78f51af0342a73aceef0569759e6cd9a1cce267c542bd",
+  "build_note": "PCA diagnostic embeddings. Do NOT overwrite item_embeddings.npy."
+}

@@ -1,0 +1,6 @@
+inherits: ../../runs/movielens_full_integrated_distill_surface_seed42.yaml
+
+_meta:
+  package: final_unified
+  dataset: movielens
+  release: interrec260725

@@ -1,0 +1,16 @@
+{
+  "dataset": "lastfm",
+  "embedding_mode": "bge_m3_pca128",
+  "embedding_source": "BGE-M3 1024",
+  "compression": "PCA",
+  "embedding_dim": 128,
+  "normalized": true,
+  "source_embedding_path": "/home/yrh666/interrec-noapi/data/processed/lastfm_bge_m3/item_embeddings.npy",
+  "installed_embedding_path": "/home/yrh666/interrec-noapi/data/processed/lastfm_bge_m3_pca128/item_embeddings.npy",
+  "pca_model_path": "/home/yrh666/interrec-noapi/data/processed/lastfm_bge_m3_pca128/pca_model.pkl",
+  "item_count": 2665,
+  "verified_mapping": true,
+  "explained_variance_ratio_sum": 0.7248368228866349,
+  "notes": "BGE-M3 item embeddings compressed to 128D via PCA for LastFM efficiency.",
+  "built_at": "2026-07-04T16:40:02.676174+00:00"
+}

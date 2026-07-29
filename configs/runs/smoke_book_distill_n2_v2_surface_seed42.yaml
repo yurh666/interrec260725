@@ -1,0 +1,5 @@
+# A/B smoke: Intent Teacher v2 LoRA (2 sessions) — same as canonical after 2026-07-25 switch
+inherits: smoke_book_distill_n2_seed42.yaml
+
+_meta:
+  ab_surface: intent_teacher_v2

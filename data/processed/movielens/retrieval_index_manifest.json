@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-05-23T21:34:55",
+  "dense_retrieval_backend": "numpy_inner_product",
+  "note": "Runtime uses L2-normalized query · item matrix multiply on CPU; no FAISS required.",
+  "embedding_file": "item_embeddings.npy",
+  "item_id_map": "item_id_to_index.json",
+  "shape": [
+    3115,
+    1024
+  ],
+  "faiss_index_file": null
+}

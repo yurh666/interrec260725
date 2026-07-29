@@ -1,0 +1,41 @@
+dataset:
+  name: movielens
+  data_root: data/processed/movielens
+  item_metadata_path: data/processed/movielens/items.csv
+  item_embedding_path: data/processed/movielens/item_embeddings_pca256.npy
+  candidate_pool_path: null
+  split_path: data/processed/movielens/user_splits.json
+protocol:
+  seed: 42
+  max_turns: 15
+  candidate_scope: top500
+  top_frontier: 500
+  boundary_end: 100
+  strict_s1: true
+  oos_skip: true
+  batched: true
+semantic_backend:
+  enabled: true
+  type: integrated_representative_item
+  variant: frontier_aware
+  implementation_mode: frontier_clustered_v32_integrated_representative_item
+  allow_cluster_bound_v2_mock_fallback: false
+movielens_specific:
+  strict_s1: true
+  top500: true
+  oos_skip: true
+  batched: true
+memory:
+  enabled: true
+  mode: compatibility
+  effect_strength: 0.0
+surface_writer:
+  mode: local_small_model
+  local_model_path: null
+  fallback_mode: mock_template
+  api_enabled: false
+runtime:
+  trace_replay_enabled: false
+  cache_enabled: false
+  network_guard_enabled: true
+  api_calls_expected: 0

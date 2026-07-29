@@ -1,0 +1,19 @@
+{
+  "verdict": "book_metadata_enriched_and_aligned",
+  "checks": {
+    "row_count_match": true,
+    "item_id_sequence_match": true,
+    "asin_sequence_match": true,
+    "embedding_rows_match": true,
+    "session_items_in_enriched": true,
+    "future_test_items_in_enriched": true,
+    "title_coverage": 0.9991241241241241,
+    "title_coverage_positive": true
+  },
+  "weak_metadata": false,
+  "usable_for_prompt": true,
+  "embedding_shape": [
+    7992,
+    1024
+  ]
+}

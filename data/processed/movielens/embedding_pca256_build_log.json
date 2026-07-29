@@ -1,0 +1,46 @@
+{
+  "created": "2026-06-05T12:30:41",
+  "dataset": "movielens",
+  "source_embedding": "/root/interrec/data/processed/movielens/item_embeddings.npy",
+  "source_sha256": "2c23eb45243f8739181aa37fe8aa7bc545218c43cdb4c84603eb4eccc7a1ea1d",
+  "pca_components": 256,
+  "explained_variance_ratio_sum": 0.9188081622123718,
+  "explained_variance_ratio_top10": [
+    0.09032431989908218,
+    0.060211386531591415,
+    0.04104701429605484,
+    0.036366503685712814,
+    0.025270167738199234,
+    0.0230700746178627,
+    0.01855536550283432,
+    0.016957245767116547,
+    0.015243434347212315,
+    0.013771667145192623
+  ],
+  "output_path": "/root/interrec/movielens_pca_export/movielens/item_embeddings_pca256.npy",
+  "shape": [
+    3115,
+    256
+  ],
+  "dtype": "float32",
+  "sha256": "e0490195163c89e40e9f6d52e6c40112ea3503b828d6802c76a6051a08355ea3",
+  "l2_normalized": true,
+  "nan_count": 0,
+  "inf_count": 0,
+  "norm_stats": {
+    "mean": 1.0,
+    "std": 6.183054779285158e-08,
+    "min": 0.9999997615814209,
+    "max": 1.000000238418579
+  },
+  "cosine_random_1000": {
+    "mean": -0.0066045899875462055,
+    "std": 0.14288409054279327,
+    "min": -0.3481726050376892,
+    "max": 0.522658109664917
+  },
+  "build_time_sec": 0.19,
+  "item_count": 3115,
+  "items_sha256": "d45fc6865a789de9452fbf9d3c7dbe0bb9644da27bf0c2770f53914c0a787bcc",
+  "itemid_list_sha256": "c25d621c623699192185e0766099baeded17a5e192a8d009529bf98f2aa71ac9"
+}

@@ -1,0 +1,15 @@
+{
+  "local_model_path": "outputs/surface_writer_qwen/lora_adapter",
+  "adapter_path": "outputs/surface_writer_qwen/lora_adapter",
+  "base_model_path": "${INTERREC_BASE_MODEL_PATH}",
+  "merged_model_path": null,
+  "device": "cpu",
+  "quantization": "4bit_at_train",
+  "inference_dtype": "float32",
+  "max_new_tokens": 512,
+  "do_sample": false,
+  "api_enabled": false,
+  "fallback_mode": "mock_template",
+  "integration_key": "SurfaceWriter.local_model_path",
+  "note": "Set INTERREC_BASE_MODEL_PATH to your local Qwen2.5-1.5B-Instruct directory (or place under models/Qwen2.5-1.5B-Instruct). Paths support env expansion."
+}

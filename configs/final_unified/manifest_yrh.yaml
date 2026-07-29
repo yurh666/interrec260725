@@ -1,0 +1,31 @@
+# InterRec YRH — final unified (interrec260725)
+package: interrec-yrh
+release: interrec260725
+seed: 42
+code_entry: scripts/run_main_experiment.py
+
+datasets:
+  book:
+    profile: configs/datasets/book_bge_pca128.yaml
+    full_config: configs/runs/book_full_integrated_distill_surface_seed42.yaml
+    smoke_config: configs/runs/smoke_book_distill_n2_seed42.yaml
+    n_sessions: 2107
+  movielens:
+    profile: configs/datasets/movielens.yaml
+    full_config: configs/runs/movielens_full_integrated_distill_surface_seed42.yaml
+    smoke_config: configs/runs/smoke_movielens_distill_n2_seed42.yaml
+    n_sessions: 4731
+  lastfm:
+    profile: configs/datasets/lastfm_bge_m3_pca128.yaml
+    full_config: configs/runs/lastfm_full_integrated_distill_surface_seed42.yaml
+    smoke_config: configs/runs/smoke_lastfm_distill_n2_seed42.yaml
+    n_sessions: 1648
+
+surface:
+  lora: outputs/intent_teacher_v2/lora_adapter
+  inference: outputs/intent_teacher_v2/inference_config.json
+  base_model: set INTERREC_BASE_MODEL_PATH (see outputs/intent_teacher_v2/BASE_MODEL_SETUP.md)
+  surface_student: intent_teacher_v2
+  adapter_sha256: 7efee94ca8689affcd207e1538c0afc8d5396ef20cbc2302ce4f91496608d8d6
+
+outcomes: ../interrec-yrh-outcome/ (not in code tarball)

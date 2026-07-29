@@ -1,0 +1,9 @@
+[project]
+name = "interrec-noapi"
+version = "0.1.0"
+description = "InterRec-noAPI local frontier-aware representative backend"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["interrec_noapi"]
+package-dir = {"" = "src"}

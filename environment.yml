@@ -1,0 +1,16 @@
+name: interrec-noapi
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.10
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - tqdm
+  - pyyaml
+  - tabulate
+  - requests
+  - pip:
+      - rank-bm25

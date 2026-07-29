@@ -1,0 +1,38 @@
+inherits: ../frontier_aware_full_seed42/lastfm_full_frontier_aware_no_api_seed42.yaml
+
+dataset:
+  name: lastfm
+  processed_dir: data/processed/lastfm_bge_m3_pca128
+
+embedding:
+  mode: bge_m3_pca
+  dim: 128
+  normalize: true
+  bge_model: BAAI/bge-m3
+  use_mock_if_failed: false
+  output_dir: data/processed/lastfm_bge_m3_pca128
+  manifest_path: data/processed/lastfm_bge_m3_pca128/manifest.json
+
+surface_writer:
+  mode: mock_template
+  api_enabled: false
+  cache_enabled: false
+  require_cache_hit: false
+  allow_mock: true
+  fallback_mode: mock_template
+  allow_model_generation_on_miss: false
+
+runtime:
+  trace_replay_enabled: false
+  cache_enabled: false
+  network_guard_enabled: true
+  api_calls_expected: 0
+
+simulation:
+  split: test
+  max_users: null
+  max_turns: 15
+  episode_ids: []
+
+logging:
+  generate_report: true

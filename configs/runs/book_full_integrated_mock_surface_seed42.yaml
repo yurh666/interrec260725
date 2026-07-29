@@ -1,0 +1,57 @@
+# Book FINAL full (2107): integrated representative + use_mock_llm (same hypothesis engine as ML/LF smoke).
+# Book protocol: 15-turn full_voi, c_ask=0.35, NO ML/LF lazy pre-gate / max_v32_asks caps.
+# Surface: mock_template until distill validated.
+inherits: book_hit025_surface_distill_only_seed42.yaml
+
+simulation:
+  split: test
+  max_turns: 15
+  max_users: null
+  episode_ids: []
+
+ask:
+  hypothesis_generation:
+    frontier_clustered_v32:
+      use_mock_llm: true
+      when_to_ask: full_voi
+      enable_cluster_bound_v2_entropy_ask_gate: false
+      lazy_generation_enabled: false
+      pre_gate_enabled: false
+      pre_gate: false
+  representative_retrieval:
+    mode: legacy
+    gamma_negative_bm25: 0.5
+    prefetch_k: 400
+    overlap_penalty_coef: 0.35
+    use_positive_negative_queries: true
+    use_overlap_penalty: true
+    use_multi_centroid: false
+    log_scores: false
+
+semantic_backend:
+  enabled: true
+  type: integrated_representative_item
+  variant: frontier_aware
+  top_k: 5
+  alpha: 0.7
+  beta: 0.3
+  gamma: 0.05
+  implementation_mode: frontier_clustered_v32_integrated_representative_item
+  allow_cluster_bound_v2_mock_fallback: false
+  preserve_reference_route: false
+
+surface_writer:
+  mode: mock_template
+  local_model_path: null
+  inference_config_path: null
+  api_enabled: false
+  cache_enabled: false
+  require_cache_hit: false
+  allow_mock: true
+  fallback_mode: mock_template
+  allow_model_generation_on_miss: false
+
+_meta:
+  canonical: book_final_integrated_no_lazy_cap_mock_surface_seed42
+  spec_ref: configs/INTERREC_CANONICAL_SPEC_20260724.md
+  note: repr_retrieval=legacy aligned with ML/LF; integrated variant=frontier_aware (same as ML/LF). Book-only frontier/domain + no lazy ask cap.

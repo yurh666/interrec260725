@@ -1,0 +1,17 @@
+{
+  "generated": "2026-07-25T12:11:05.020465+00:00",
+  "datasets": {
+    "book": {
+      "dir": "data/processed/amazon_book",
+      "embedding": "item_embeddings_pca128.npy"
+    },
+    "movielens": {
+      "dir": "data/processed/movielens",
+      "embedding": "item_embeddings_pca256.npy"
+    },
+    "lastfm": {
+      "dir": "data/processed/lastfm_bge_m3_pca128",
+      "embedding": "item_embeddings.npy"
+    }
+  }
+}
