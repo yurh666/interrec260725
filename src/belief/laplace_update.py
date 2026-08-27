@@ -63,6 +63,7 @@ def laplace_choice_update(
     inv_sigma: np.ndarray | None = None,
     cho_sigma: object | None = None,
     entropy_only: bool = False,
+    update_sigma: bool = True,
 ) -> "BeliefState | float":
     """Laplace-approximate posterior after user selects option `selected_index`.
 
@@ -77,7 +78,7 @@ def laplace_choice_update(
     jitter = belief.jitter
 
     if selected_index is None:
-        Sigma_new = belief.Sigma * float(alpha_none)
+        Sigma_new = belief.Sigma.copy() if not update_sigma else belief.Sigma * float(alpha_none)
         if entropy_only:
             _, logdet, _ = fast_inv_and_logdet(Sigma_new, jitter)
             return float(0.5 * (d * np.log(2 * np.pi * np.e) + logdet))
@@ -129,6 +130,11 @@ def laplace_choice_update(
             _, logdet_h = np.linalg.slogdet(h_neg_final)
         logdet_sigma_new = -logdet_h
         return float(0.5 * (d * np.log(2 * np.pi * np.e) + logdet_sigma_new))
+
+    if not update_sigma:
+        updated = BeliefState(mu=theta, Sigma=belief.Sigma.copy(), jitter=jitter)
+        updated.ensure_psd(force=True)
+        return updated
 
     # Full update: form Sigma_new
     try:

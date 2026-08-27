@@ -9,6 +9,7 @@ import numpy as np
 from src.belief.belief_state import BeliefState
 from src.belief.initialization import initialize_belief
 from src.belief.laplace_update import laplace_choice_update
+from src.choicerec.subexperiment_runtime import belief_update_ablation_mode
 from src.memory.adaptive_intent_units import adaptive_memory_to_belief
 from src.memory.incremental_history_builder import IncrementalHistoryMemoryBuilder
 from src.memory.incremental_memory_update import update_intent_memory_with_choice
@@ -43,6 +44,7 @@ class MemorySessionContext:
     mode: str
     belief_update_mode: str
     memory_cfg: dict[str, Any]
+    belief_update_ablation: str | None = None
     intent_memory_state: IntentMemoryState | None = None
     memory_update_traces: list[dict[str, Any]] = field(default_factory=list)
     memory_init_trace: dict[str, Any] = field(default_factory=dict)
@@ -74,6 +76,7 @@ def resolve_memory_session_context(cfg: dict[str, Any], belief_cfg: dict[str, An
         mode=mode,
         belief_update_mode=belief_update_mode,
         memory_cfg=memory_cfg,
+        belief_update_ablation=belief_update_ablation_mode(cfg),
     )
 
 
@@ -213,9 +216,23 @@ def apply_choice_belief_update(
     seen_items: set[str],
     top_k: int,
 ) -> tuple[BeliefState, str, dict[str, Any] | None]:
+    ablation = ctx.belief_update_ablation
+    if ablation == "none":
+        trace = {"belief_update_ablation": "none", "skipped": True}
+        return belief.copy(), "belief_update_skipped", trace
+    update_sigma = ablation != "mean_only"
+
     if not ctx.enabled or ctx.intent_memory_state is None:
-        updated = laplace_choice_update(belief, opt_vectors, sel_vec_idx, tau, alpha_none)
-        return updated, "belief_update", None
+        updated = laplace_choice_update(
+            belief,
+            opt_vectors,
+            sel_vec_idx,
+            tau,
+            alpha_none,
+            update_sigma=update_sigma,
+        )
+        trace = {"belief_update_ablation": ablation} if ablation else None
+        return updated, "belief_update", trace
 
     memory_cfg = ctx.memory_cfg
     memory_active_update = (
@@ -226,8 +243,16 @@ def apply_choice_belief_update(
     memory_trace_only = ctx.mode == "memory_compatible" and not memory_active_update
 
     if not (memory_trace_only or memory_active_update):
-        updated = laplace_choice_update(belief, opt_vectors, sel_vec_idx, tau, alpha_none)
-        return updated, "belief_update", None
+        updated = laplace_choice_update(
+            belief,
+            opt_vectors,
+            sel_vec_idx,
+            tau,
+            alpha_none,
+            update_sigma=update_sigma,
+        )
+        trace = {"belief_update_ablation": ablation} if ablation else None
+        return updated, "belief_update", trace
 
     mem_update_cfg = _build_update_config(memory_cfg, trace_only=memory_trace_only)
     sel_vec = None if sel_vec_idx is None else opt_vectors[sel_vec_idx]
@@ -250,6 +275,7 @@ def apply_choice_belief_update(
         tau=tau,
         alpha_none=alpha_none,
         memory_belief_blend=update_blend,
+        update_sigma=update_sigma,
     )
     ctx.intent_memory_state = intent_memory_state
     memory_update_trace["memory_mode"] = ctx.mode

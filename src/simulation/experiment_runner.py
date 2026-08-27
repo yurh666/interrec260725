@@ -143,7 +143,17 @@ def run_interrec_experiment(
                 run_id=logger.run_id,
             )
             try:
-                theta_info = build_theta_star(session, index, split=split, dataset=dataset)
+                if str(sim_cfg.get("protocol", "")).lower() == "choicerec":
+                    import numpy as np
+
+                    dim = index.embeddings.shape[1]
+                    theta_info = {
+                        "theta_star": np.zeros(dim, dtype=float),
+                        "theta_star_source": "choicerec_dynamic",
+                        "theta_star_items": [],
+                    }
+                else:
+                    theta_info = build_theta_star(session, index, split=split, dataset=dataset)
                 episode = run_session(
                     session=session,
                     theta_info=theta_info,

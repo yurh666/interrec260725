@@ -1,0 +1,24 @@
+# ChoiceRec MovieLens full — mock-only.
+inherits: ../runs/movielens_full_integrated_mock_surface_seed42.yaml
+
+simulation:
+  protocol: choicerec
+  split: test
+  max_turns: 15
+  max_users: null
+  episode_ids: []
+
+llm:
+  mode: mock
+  provider: none
+  api_enabled: false
+
+surface_writer:
+  mode: mock_template
+  api_enabled: false
+  allow_mock: true
+  allow_model_generation_on_miss: false
+
+_meta:
+  project: choicerec
+  protocol: choicerec

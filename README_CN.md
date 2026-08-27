@@ -1,27 +1,43 @@
-# interrec260725
+# ChoiceRec
 
-InterRec **最终版**（interrec260725）：integrated + γ=0.05 + **Intent Teacher v2** surface LoRA。
+ChoiceRec 在 InterRec **260725 full**（integrated + γ=0.05 + Intent Teacher v2 surface LoRA）之上，增加了 **在线 valid 逐步释放** 的交互协议。
 
-- **Method（论文方法全文）**：`METHOD_CN.md`
-- **Pipeline（核心代码对照手册）**：`PIPELINE_CN.md`
-- **发布复核**：`docs/RELEASE_REVIEW_CN.md`
+推荐 / Frontier / VOI / belief / memory 等核心模块与 InterRec 共用；ChoiceRec 仅新增协议层与配置开关（`simulation.protocol: choicerec`）。
+
+## 文档
+
+- **ChoiceRec 协议审计**：`CHOICEREC_PROTOCOL_AUDIT_CN.md`
+- **InterRec 方法全文**：`METHOD_CN.md`
+- **Pipeline 代码对照**：`PIPELINE_CN.md`
 - **260725 跑数路径补充**：`docs/INTERREC260725_PATH_ADDENDUM_CN.md`
-- **配置索引**：`configs/final_unified/manifest_yrh.yaml`
-- **Full 结果（外链）**：`../interrec-yrh-outcome/`（`docs/OUTCOME_FILES_CN.md`）
+- **InterRec full 配置索引**：`configs/final_unified/manifest_yrh.yaml`
 
-## 快速开始
+## 快速开始（ChoiceRec full，seed 42）
 
 ```bash
 pip install -r requirements.txt
-# LoRA 推理需基座：见 outputs/intent_teacher_v2/BASE_MODEL_SETUP.md
 
-python3 scripts/run_final_interrec.py --dataset book
-# 或
+# 三数据集串行：LastFM → MovieLens → Book
+bash scripts/run_choicerec_full_serial.sh
+
+# 或单数据集
 python3 scripts/run_main_experiment.py \
-  --config configs/runs/book_full_integrated_distill_surface_seed42.yaml --seed 42
+  --config configs/choicerec/book_full_seed42.yaml \
+  --run-id choicerec_book_full_seed42
 ```
 
-## 数据与 LoRA
+## ChoiceRec 新增代码
 
-- 预处理数据：`data/processed/`（见 `data/DATA_MANIFEST.json`）
-- Canonical LoRA：`outputs/intent_teacher_v2/lora_adapter/`
+| 组件 | 路径 |
+|------|------|
+| 协议状态机 | `src/choicerec/protocol.py` |
+| 动态 θ* | `src/choicerec/theta_builder.py` |
+| 子实验辅助 | `src/choicerec/subexperiment_runtime.py` |
+| Session 集成 | `src/simulation/session_simulator.py` |
+| Full 配置 | `configs/choicerec/*_full_seed42.yaml` |
+
+## InterRec full（原有用法不变）
+
+```bash
+python3 scripts/run_final_interrec.py --dataset book
+```

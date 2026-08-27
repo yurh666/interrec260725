@@ -18,7 +18,7 @@ def _top10_softmax_entropy(scores: list[float]) -> float:
     p = p / s
     return float(-np.sum(p * np.log(p + 1e-15)))
 
-from src.agents.direction_translator import DirectionTranslator
+from src.choicerec.subexperiment_runtime import apply_fixed_ask_schedule
 from src.agents.frontier_clustered_hypothesis_integration import (
     frontier_cluster_session_armed,
     run_frontier_clustered_v32_hypotheses_turn,
@@ -250,23 +250,42 @@ def run_session(
     top_k = int(rec_cfg.get("top_k", 10))
     max_turns = int(sim_cfg.get("max_turns", 5))
 
-    observed_history = session["observed_history"]
-    split_key = theta_info["theta_star_source"]
-    future_items = session.get("future_test", []) or session.get("future_valid", []) or session.get("future_train", [])
-    relevant = set(str(x) for x in future_items)
+    choicerec_proto = None
+    if str(sim_cfg.get("protocol", "")).lower() == "choicerec":
+        from src.choicerec.protocol import ChoiceRecProtocol
 
-    weights = dataset.weights_for_items(session["user_id"], observed_history)
+        choicerec_proto = ChoiceRecProtocol.from_session(
+            session, dataset, index, belief_cfg, max_turns=max_turns
+        )
+
+    observed_history = session["observed_history"]
+    if choicerec_proto is not None:
+        init_history = list(choicerec_proto.visible_behavior_history)
+        relevant = set(str(x) for x in choicerec_proto.future_test)
+        future_items = list(choicerec_proto.future_test)
+    else:
+        init_history = observed_history
+        future_items = session.get("future_test", []) or session.get("future_valid", []) or session.get("future_train", [])
+        relevant = set(str(x) for x in future_items)
+
+    split_key = theta_info["theta_star_source"]
+
+    weights = dataset.weights_for_items(session["user_id"], init_history)
     memory_ctx: MemorySessionContext = resolve_memory_session_context(cfg, belief_cfg)
     t0 = time.perf_counter()
     belief, belief_init_component, memory_init_trace = initialize_belief_with_memory(
         ctx=memory_ctx,
-        observed_history=observed_history,
+        observed_history=init_history,
         index=index,
         weights=weights,
         belief_cfg=belief_cfg,
         rec_cfg=rec_cfg,
         top_k=top_k,
     )
+    if choicerec_proto is not None:
+        choicerec_proto.behavior_mu = belief.mu.copy()
+        dim = index.embeddings.shape[1]
+        choicerec_proto.choice_residual = np.zeros(dim, dtype=float)
     append_diagnostics_row(
         {
             "user_id": session["user_id"],
@@ -286,7 +305,10 @@ def run_session(
         }
     )
 
-    theta_star = theta_info["theta_star"]
+    if choicerec_proto is not None:
+        theta_star = choicerec_proto.build_theta_star()["theta_star"]
+    else:
+        theta_star = theta_info["theta_star"]
     simulator = UserSimulator(
         theta_star=theta_star,
         choice_mode=sim_cfg.get("user_choice_mode", "deterministic_argmax"),
@@ -296,7 +318,10 @@ def run_session(
         none_threshold=none_threshold,
     )
 
-    seen_items = set(str(x) for x in observed_history)
+    if choicerec_proto is not None:
+        seen_items = set(choicerec_proto.seen_items)
+    else:
+        seen_items = set(str(x) for x in observed_history)
     ask_count = 0
     consecutive_no_ask_tail = 0
     turns_log: list[dict[str, Any]] = []
@@ -349,6 +374,13 @@ def run_session(
 
     for turn in range(1, max_turns + 1):
         t_turn0 = time.perf_counter()
+        if choicerec_proto is not None:
+            theta_info_turn = choicerec_proto.build_theta_star()
+            theta_star = theta_info_turn["theta_star"]
+            simulator.theta_star = theta_star
+            exclude_items = choicerec_proto.policy_exclude_items
+        else:
+            exclude_items = seen_items
         fc32_routing_repair_audit = None
         fc32_oos_skip_audit: dict[str, Any] | None = None
         fc32_compensation_audit: dict[str, Any] | None = None
@@ -361,7 +393,7 @@ def run_session(
 
         # --- Recommend ---
         t0 = time.perf_counter()
-        recs = recommender.recommend(belief, top_k=top_k, exclude=seen_items)
+        recs = recommender.recommend(belief, top_k=top_k, exclude=exclude_items)
         append_diagnostics_row(
             {
                 "event": "phase",
@@ -399,7 +431,7 @@ def run_session(
 
         # --- Uncertainty directions + anchors ---
         t0 = time.perf_counter()
-        anchor_dirs = build_anchor_directions(belief, index, K=K_dir, anchor_top_k=anchor_k, exclude=seen_items)
+        anchor_dirs = build_anchor_directions(belief, index, K=K_dir, anchor_top_k=anchor_k, exclude=exclude_items)
         append_diagnostics_row(
             {
                 "event": "phase",
@@ -535,7 +567,7 @@ def run_session(
                     hypotheses, frontier_gen_block_this_turn = run_frontier_clustered_v32_hypotheses_turn(
                         belief=belief,
                         index=index,
-                        seen_items=seen_items,
+                        seen_items=exclude_items,
                         observed_history=observed_history,
                         translated=translated,
                         hyp_generator=hyp_generator,
@@ -562,7 +594,7 @@ def run_session(
                         hypotheses, frontier_gen_block_this_turn = run_frontier_clustered_v32_hypotheses_turn(
                             belief=belief,
                             index=index,
-                            seen_items=seen_items,
+                            seen_items=exclude_items,
                             observed_history=observed_history,
                             translated=translated,
                             hyp_generator=hyp_generator,
@@ -609,7 +641,7 @@ def run_session(
                             hypotheses, frontier_gen_block_this_turn = run_frontier_clustered_v32_hypotheses_turn(
                                 belief=belief,
                                 index=index,
-                                seen_items=seen_items,
+                                seen_items=exclude_items,
                                 observed_history=observed_history,
                                 translated=translated,
                                 hyp_generator=hyp_generator,
@@ -649,7 +681,7 @@ def run_session(
                 hypotheses, frontier_gen_block_this_turn = run_frontier_clustered_v32_hypotheses_turn(
                     belief=belief,
                     index=index,
-                    seen_items=seen_items,
+                    seen_items=exclude_items,
                     observed_history=observed_history,
                     translated=translated,
                     hyp_generator=hyp_generator,
@@ -1643,6 +1675,26 @@ def run_session(
                 if oos_from_trace is not None and oos_from_trace.get("oos_skip_applied"):
                     do_ask = False
 
+        max_turns_cfg = int(sim_cfg.get("max_turns", 15) or 15)
+        do_ask, fixed_ask_audit = apply_fixed_ask_schedule(
+            cfg=cfg,
+            turn=turn,
+            max_turns=max_turns_cfg,
+            natural_do_ask=bool(do_ask),
+            episode_id=str(session.get("episode_id", session["user_id"])),
+        )
+        if fixed_ask_audit.get("enabled") and do_ask and not sel.get("best_ids"):
+            sel = select_best_question(
+                belief,
+                hyp_vectorized,
+                n_opt,
+                tau,
+                none_bias,
+                none_threshold,
+                alpha_none,
+                mc_samples,
+            )
+
         q_sel_log = {
             "candidate_question_count": sel["candidate_count"],
             "best_question_ids": sel["best_ids"],
@@ -1657,6 +1709,8 @@ def run_session(
         }
         if entropy_only_ask_gate_audit is not None:
             q_sel_log["entropy_only_ask_gate"] = entropy_only_ask_gate_audit
+        if fixed_ask_audit:
+            q_sel_log["choicerec_fixed_ask_schedule"] = fixed_ask_audit
 
         # --- Question + user choice ---
         belief_update_executed = False
@@ -1797,7 +1851,7 @@ def run_session(
                 recommender=recommender,
                 cur_top10=[str(x) for x in cur_top10],
                 rec_scores=list(rec_scores),
-                seen_items=seen_items,
+                seen_items=exclude_items,
                 top_k=top_k,
             )
             append_diagnostics_row(
@@ -1813,6 +1867,8 @@ def run_session(
                     ),
                 }
             )
+            if choicerec_proto is not None:
+                choicerec_proto.record_after_choice(belief)
 
             if (
                 frontier_gen_block_this_turn is not None
@@ -1970,7 +2026,7 @@ def run_session(
 
         # preference_error: ||mu_t - theta*||
         pref_error = float(np.linalg.norm(belief.mu - theta_star))
-        final_recs = recommender.recommend(belief, top_k=top_k, exclude=seen_items)
+        final_recs = recommender.recommend(belief, top_k=top_k, exclude=exclude_items)
         final_rec_ids = [item_id for item_id, _ in final_recs]
         final_rec_scores = [score for _, score in final_recs]
         final_m5 = ranking_metrics(final_rec_ids, relevant, k=5)
@@ -2088,11 +2144,20 @@ def run_session(
             }
         if csc_readout_audit is not None:
             turn_log["csc_readout_audit"] = csc_readout_audit
+        if choicerec_proto is not None:
+            cr_before = choicerec_proto.turn_audit_before_choice(turn, belief)
+            turn_log["choicerec"] = {
+                **cr_before,
+                "mu_after_choice": belief.mu.tolist(),
+                "sigma_trace_after_choice": float(np.trace(belief.Sigma)),
+                "choice_asked": bool(do_ask and sel.get("best_ids")),
+                "selected_choice": (user_choice_log or {}).get("selected_option_id"),
+            }
         full_rank_audit = attach_full_rank_audit_if_enabled(
             cfg=cfg,
             recommender=recommender,
             belief=belief,
-            seen_items=seen_items,
+            seen_items=exclude_items,
             theta_star_items=theta_info.get("theta_star_items"),
             future_test_items=[str(x) for x in future_items],
         )
@@ -2107,7 +2172,7 @@ def run_session(
             turn_log["frontier_discriminative_shadow"] = safe_frontier_discriminative_shadow_turn_dict(
                 belief_snapshot_for_shadow,
                 index,
-                seen_items=seen_items,
+                seen_items=exclude_items,
                 hyp_vectorized=hyp_vectorized,
                 selected_hypothesis_ids=list(sel.get("best_ids") or []),
                 recommendation_scores_topk=rec_scores,
@@ -2135,6 +2200,27 @@ def run_session(
             )
 
         turns_log.append(turn_log)
+
+        if choicerec_proto is not None:
+            belief, cr_reveal = choicerec_proto.apply_behavioral_reveal(turn, belief)
+            turn_log["choicerec"] = {**(turn_log.get("choicerec") or {}), **cr_reveal}
+            seen_items.update(choicerec_proto.seen_items)
+            if turn == max_turns:
+                terminal_exclude = (
+                    choicerec_proto.policy_exclude_items if choicerec_proto is not None else seen_items
+                )
+                terminal_recs = recommender.recommend(belief, top_k=top_k, exclude=terminal_exclude)
+                terminal_rec_ids = [item_id for item_id, _ in terminal_recs]
+                terminal_rec_scores = [score for _, score in terminal_recs]
+                terminal_mk = ranking_metrics_multik(terminal_rec_ids, relevant, ks=(5, 10))
+                turn_log["final_recommendation_corrected"] = {
+                    "metric_source": "choicerec_terminal_after_final_valid_reveal",
+                    "recommended_items": terminal_rec_ids[:10],
+                    "scores": terminal_rec_scores[:10],
+                    **terminal_mk,
+                }
+                turn_log["metrics"].update(terminal_mk)
+                turn_log["choicerec"]["terminal_recommendation_after_final_reveal"] = True
 
         append_diagnostics_row(
             {
@@ -2173,6 +2259,8 @@ def run_session(
         "total_ask_count": ask_count,
         "final_metrics": turns_log[-1]["metrics"] if turns_log else {},
     }
+    if choicerec_proto is not None:
+        out["choicerec_session"] = choicerec_proto.session_summary()
     if trace_ctrl is not None:
         cons = trace_ctrl.consumption_summary()
         out["trace_replay"] = {
