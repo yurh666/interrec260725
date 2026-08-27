@@ -36,6 +36,18 @@ python3 scripts/run_main_experiment.py \
 | Session 集成 | `src/simulation/session_simulator.py` |
 | Full 配置 | `configs/choicerec/*_full_seed42.yaml` |
 
+## ChoiceRec full 结果（最终版，seed 42）
+
+十二指标主表见 `docs/CHOICEREC_OUTCOME_CN.md`；机器可读 CSV 在同级目录 `../interrec-yrh-outcome/metrics_main12_choicerec.csv`。
+
+| 数据集 | Hit@10 |
+|--------|-------:|
+| LastFM | 0.6201 |
+| MovieLens | 0.2363 |
+| Book | 0.2402 |
+
+跑数 log 真源：`interrec-final-github/experiments/runs/choicerec_*_full_seed42/`（无需重跑）。
+
 ## InterRec full（原有用法不变）
 
 ```bash

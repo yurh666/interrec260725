@@ -38,6 +38,18 @@ Configs inherit InterRec full mock-surface settings and set `simulation.protocol
 | Session integration | `src/simulation/session_simulator.py` |
 | Full configs | `configs/choicerec/*_full_seed42.yaml` |
 
+## ChoiceRec full results (final, seed 42)
+
+See `docs/CHOICEREC_OUTCOME_CN.md` and `../interrec-yrh-outcome/metrics_main12_choicerec.csv`.
+
+| Dataset | Hit@10 |
+|---------|-------:|
+| LastFM | 0.6201 |
+| MovieLens | 0.2363 |
+| Book | 0.2402 |
+
+Run logs live under `interrec-final-github/experiments/runs/choicerec_*_full_seed42/` — no re-run needed.
+
 ## InterRec full (unchanged)
 
 ```bash
